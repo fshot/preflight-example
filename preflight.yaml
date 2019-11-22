@@ -53,16 +53,3 @@ spec:
               uri: https://enterprise.support.io/installing/postgres
           - pass:
               message: Found a valid postgres connection string
-    - distribution:
-        outcomes:
-	  - fail:
-	      when: "= docker desktop"
-	      message: "docker desktop is not supported"
-	  - pass:
-	      when: "= gke"
-	      message: "gke is a fully supported distribution"
-	  - pass:
-	      when: "= eks"
-	      message: "eks is a fully supported distribution"
-	  - warn:
-	      message: "unsupported distribution - YMMV"
