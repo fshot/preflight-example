@@ -66,10 +66,3 @@ spec:
 	      message: "eks is a fully supported distribution"
 	  - warn:
 	      message: "unsupported distribution - YMMV"
-    - architecture:
-        outcomes:
-	  - pass:
-	      when: "= amd64"
-	      message: "AMD64 is fully supported"
-	  - fail:
-	      message: "unsupported architecture"
