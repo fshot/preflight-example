@@ -3,12 +3,6 @@ kind: Preflight
 metadata:
   name: example-preflight-checks
 spec:
-  collectors:
-    - secret:
-        name: myapp-postgres
-        namespace: default
-        key: uri
-        includeValue: false
   analyzers:
     - clusterVersion:
         outcomes:
@@ -24,19 +18,33 @@ spec:
               when: ">= 1.15.0"
               message: Your cluster meets the recommended and required versions of Kubernetes.
     - distribution:
-        checkName: Kubernetes distribution
         outcomes:
           - fail:
-              when: "= docker desktop"
-              message: "docker desktop is not supported"
+              when: "= dockerdesktop"
+              message: "Docker desktop is not supported."
           - pass:
               when: "= gke"
-              message: "gke is a fully supported distribution"
+              message: "GKE is a fully supported distribution."
           - pass:
               when: "= eks"
-              message: "eks is a fully supported distribution"
+              message: "EKS is a fully supported distribution."
           - warn:
-              message: "unsupported distribution - YMMV"
+              message: "This is not a fully supported Kubernetes distribution."
+    - storageClass:
+        checkName: Required storage classes
+        storageClassName: "standard"
+        outcomes:
+          - warn:
+              message: This cluster is using an unsupported storage class.
+          - pass:
+              message: The current cluster's storage class is fully supported.
+    - containerRuntime:
+        outcomes:
+          - fail:
+              when: "== gvisor"
+              message: The application does not support gvisor.
+          - pass:
+              message: A supported container runtime was found.
     - customResourceDefinition:
         customResourceDefinitionName: constrainttemplates.templates.gatekeeper.sh
         checkName: Gatekeeper policy runtime
@@ -56,14 +64,3 @@ spec:
               uri: https://enterprise.support.io/installing/registry-credentials
           - pass:
               message: Found credentials to pull from quay.io
-    - secret:
-        checkName: Postgres connection string
-        secretName: myapp-postgres
-        namespace: default
-        key: uri
-        outcomes:
-          - fail:
-              message: A secret named "myapp-postgres" must be deployed with a "uri" key
-              uri: https://enterprise.support.io/installing/postgres
-          - pass:
-              message: Found a valid postgres connection string
