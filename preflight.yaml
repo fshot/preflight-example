@@ -60,7 +60,7 @@ spec:
         outcomes:
           - fail:
               message: |
-                Cannot pull from quay.io. An image pull secret should be deployed to the cluster that has credentials to pull the images. To obtain this secret, please contact your support rep.
+                Cannot pull from quay.io. An image pull secret with credentials should be deployed to the cluster. To obtain this secret, please contact your support rep.
               uri: https://enterprise.support.io/installing/registry-credentials
           - pass:
               message: Found credentials to pull from quay.io
